@@ -2,6 +2,7 @@ import 'package:crud/screens/add_pessoa.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'controllers/pessoas_controller.dart';
 import 'models/pessoa.dart';
 
 void main() {
@@ -13,14 +14,13 @@ class CrudApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: 'home',
-      routes: {
-        'home': (_) => Dashboard(),
-        'cadastrarPessoa': (_) => CadastrarPessoa(),
-      },
-
+      getPages: [
+        GetPage(name: '/home', page: () => const Dashboard()),
+        GetPage(name: '/cadastrarPessoa', page: () => const CadastrarPessoa())
+      ],
     );
   }
 }
@@ -39,12 +39,12 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
-        title: Text('CRUD'),
+        title: const Text('CRUD'),
       ),
-      body: DashBody(),
+      body: const DashBody(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed('cadastrarPessoa'),
-        child: Icon(
+        child: const Icon(
           Icons.add,
           size: 32,
         ),
@@ -63,20 +63,27 @@ class DashBody extends StatefulWidget {
 class _DashBodyState extends State<DashBody> {
   @override
   Widget build(BuildContext context) {
+    final pessoasCtrl = Get.put(PessoasControler());
+
     return Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(color: Colors.purple),
-        child: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-              child: PersonCard(
-                pessoa: Pessoa('Guilherme', 'guilhermeandre@dnitservices.com'),
-              ),
-            ),
-          ],
-        ));
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(color: Colors.purple),
+      child: Obx(() {
+        if (pessoasCtrl.pessoas.isEmpty) {
+          return const Center(child: Text('Sem Usuarios Cadastrados'));
+        } else {
+          return ListView.builder(
+            itemCount: pessoasCtrl.pessoas.length,
+            itemBuilder: (context, index) {
+              Pessoa _porPessoa = pessoasCtrl.pessoas.elementAt(index);
+              return PersonCard(
+                  pessoa: Pessoa(_porPessoa.name, _porPessoa.email));
+            },
+          );
+        }
+      }),
+    );
   }
 }
 
@@ -90,15 +97,15 @@ class PersonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       height: 100,
       width: double.infinity,
-      decoration: BoxDecoration(color: Colors.white),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 32,
           ),
           Column(
@@ -107,19 +114,19 @@ class PersonCard extends StatelessWidget {
             children: [
               Text(
                 pessoa.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                 ),
               ),
               Text(
                 pessoa.email,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               )
             ],
           ),
           IconButton(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.delete,
                 color: Colors.red,
                 size: 24,
@@ -129,4 +136,3 @@ class PersonCard extends StatelessWidget {
     );
   }
 }
-
