@@ -1,4 +1,5 @@
 import 'package:crud/screens/add_pessoa.dart';
+import 'package:crud/screens/atualizarcadastro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,8 @@ class CrudApp extends StatelessWidget {
       initialRoute: 'home',
       getPages: [
         GetPage(name: '/home', page: () => const Dashboard()),
-        GetPage(name: '/cadastrarPessoa', page: () => const CadastrarPessoa())
+        GetPage(name: '/cadastrarPessoa', page: () => const CadastrarPessoa()),
+        GetPage(name: '/atualizarPessoa', page: () => AtualizarPessoa()),
       ],
     );
   }
@@ -78,7 +80,9 @@ class _DashBodyState extends State<DashBody> {
             itemBuilder: (context, index) {
               Pessoa _porPessoa = pessoasCtrl.pessoas.elementAt(index);
               return PersonCard(
-                  pessoa: Pessoa(_porPessoa.name, _porPessoa.email));
+                pessoa: Pessoa(_porPessoa.name, _porPessoa.email),
+                indexPessoa: index,
+              );
             },
           );
         }
@@ -91,11 +95,15 @@ class PersonCard extends StatelessWidget {
   const PersonCard({
     Key? key,
     required this.pessoa,
+    required this.indexPessoa,
   }) : super(key: key);
   final Pessoa pessoa;
+  final int indexPessoa;
 
   @override
   Widget build(BuildContext context) {
+    final _pessoasCtrl = Get.find<PessoasControler>();
+
     return Container(
       padding: const EdgeInsets.all(8),
       height: 100,
@@ -124,13 +132,30 @@ class PersonCard extends StatelessWidget {
               )
             ],
           ),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
-                size: 24,
-              ))
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Get.toNamed('atualizarPessoa', arguments: [Pessoa(pessoa.name, pessoa.email), indexPessoa]);
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: Colors.blue,
+                  size: 24,
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    print('teste ${_pessoasCtrl.pessoas}');
+                    _pessoasCtrl.removerPessoa(indexPessoa);
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                    size: 24,
+                  )),
+            ],
+          )
         ],
       ),
     );

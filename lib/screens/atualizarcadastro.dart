@@ -4,20 +4,25 @@ import 'package:get/get.dart';
 
 import '../controllers/pessoas_controller.dart';
 
-class CadastrarPessoa extends StatelessWidget {
-  const CadastrarPessoa({Key? key, }) : super(key: key);
-
+class AtualizarPessoa extends StatelessWidget {
+  const AtualizarPessoa({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> data = Get.arguments;
+    Pessoa pessoaAtualizar = data[0];
     final _pessoasCtrl = Get.find<PessoasControler>();
-    TextEditingController nome = TextEditingController();
-    TextEditingController email = TextEditingController();
+    TextEditingController nome =
+        TextEditingController(text: pessoaAtualizar.name);
+    TextEditingController email =
+        TextEditingController(text: pessoaAtualizar.email);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
-        title: Text('Cadastrar'),
+        title: Text('Atualizar'),
       ),
       body: Container(
         width: double.infinity,
@@ -59,11 +64,13 @@ class CadastrarPessoa extends StatelessWidget {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: () {
-              _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text));
-              Get.back();
+            ElevatedButton(
+                onPressed: () {
+                  _pessoasCtrl.atulizarPessoa(data[1], pessoaAtualizar);
 
-            }, child: const Text('Cadastrar'))
+                  Get.back();
+                },
+                child: const Text('Cadastrar'))
           ],
         ),
       ),
