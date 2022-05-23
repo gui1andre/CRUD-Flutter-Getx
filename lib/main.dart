@@ -1,6 +1,9 @@
+import 'dart:html';
+
 import 'package:crud/screens/add_pessoa.dart';
 import 'package:crud/screens/atualizarcadastro.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 
 import 'controllers/pessoas_controller.dart';
@@ -85,13 +88,12 @@ class _DashBodyState extends State<DashBody> {
                     pessoa: Pessoa(_porPessoa.name, _porPessoa.email),
                     indexPessoa: index,
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.black,
                     height: 1,
                   )
                 ],
               );
-              
             },
           );
         }
@@ -127,7 +129,7 @@ class PersonCard extends StatelessWidget {
             CircleAvatar(
               child: Text(
                 '${pessoa.name[0].capitalize}',
-                style: TextStyle(fontSize: 32),
+                style: const TextStyle(fontSize: 32),
               ),
               radius: 32,
             ),

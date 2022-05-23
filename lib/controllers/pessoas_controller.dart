@@ -1,3 +1,4 @@
+
 import 'package:get/get.dart';
 import '../models/pessoa.dart';
 
@@ -14,8 +15,7 @@ class PessoasControler extends GetxController {
 
   void atulizarPessoa(int index, Pessoa atualizarPessoa){
       pessoas[index] = atualizarPessoa;
-      
-
+    
 
   }
 }
