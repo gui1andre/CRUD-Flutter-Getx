@@ -5,17 +5,17 @@ import 'package:get/get.dart';
 import '../controllers/pessoas_controller.dart';
 
 class CadastrarPessoa extends StatelessWidget {
-  const CadastrarPessoa({Key? key, }) : super(key: key);
-
-
+  const CadastrarPessoa({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _pessoasCtrl = Get.find<PessoasControler>();
     TextEditingController nome = TextEditingController();
     TextEditingController email = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-    
+    final addformKey = GlobalKey<FormState>();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -29,7 +29,7 @@ class CadastrarPessoa extends StatelessWidget {
         child: Column(
           children: [
             Form(
-                key: formKey,
+                key: addformKey,
                 child: Column(
                   children: [
                     Padding(
@@ -37,6 +37,7 @@ class CadastrarPessoa extends StatelessWidget {
                       child: SizedBox(
                         width: 350,
                         child: TextFormField(
+               
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Nome obrigatório.';
@@ -57,6 +58,7 @@ class CadastrarPessoa extends StatelessWidget {
                       child: SizedBox(
                         width: 350,
                         child: TextFormField(
+                      
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'E-mail obrigatório.';
@@ -74,11 +76,15 @@ class CadastrarPessoa extends StatelessWidget {
                     )
                   ],
                 )),
-            ElevatedButton(onPressed: () {
-              _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text));
-              Get.back();
-
-            }, child: const Text('Cadastrar'))
+            ElevatedButton(
+                onPressed: () {
+                  final isValidForm = addformKey.currentState!.validate();
+                  if (isValidForm) {
+                    _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text));
+                    Get.back();
+                  }
+                },
+                child: const Text('Cadastrar'))
           ],
         ),
       ),

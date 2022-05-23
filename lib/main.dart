@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:crud/screens/add_pessoa.dart';
 import 'package:crud/screens/atualizarcadastro.dart';
 import 'package:flutter/material.dart';
@@ -126,27 +124,35 @@ class PersonCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              child: Text(
-                '${pessoa.name[0].capitalize}',
-                style: const TextStyle(fontSize: 32),
-              ),
-              radius: 32,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(
-                  pessoa.name,
-                  style: const TextStyle(
-                    fontSize: 20,
+                CircleAvatar(
+                  child: Text(
+                    '${pessoa.name[0].capitalize}',
+                    style: const TextStyle(fontSize: 32),
+                  ),
+                  radius: 32,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pessoa.name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        pessoa.email,
+                        style: const TextStyle(fontSize: 16),
+                      )
+                    ],
                   ),
                 ),
-                Text(
-                  pessoa.email,
-                  style: const TextStyle(fontSize: 16),
-                )
               ],
             ),
             Row(
