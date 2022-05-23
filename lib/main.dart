@@ -21,7 +21,7 @@ class CrudApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/home', page: () => const Dashboard()),
         GetPage(name: '/cadastrarPessoa', page: () => const CadastrarPessoa()),
-        GetPage(name: '/atualizarPessoa', page: () => AtualizarPessoa()),
+        GetPage(name: '/atualizarPessoa', page: () => const AtualizarPessoa()),
       ],
     );
   }
@@ -70,7 +70,7 @@ class _DashBodyState extends State<DashBody> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(color: Colors.purple),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Obx(() {
         if (pessoasCtrl.pessoas.isEmpty) {
           return const Center(child: Text('Sem Usuarios Cadastrados'));
@@ -79,10 +79,19 @@ class _DashBodyState extends State<DashBody> {
             itemCount: pessoasCtrl.pessoas.length,
             itemBuilder: (context, index) {
               Pessoa _porPessoa = pessoasCtrl.pessoas.elementAt(index);
-              return PersonCard(
-                pessoa: Pessoa(_porPessoa.name, _porPessoa.email),
-                indexPessoa: index,
+              return Column(
+                children: [
+                  PersonCard(
+                    pessoa: Pessoa(_porPessoa.name, _porPessoa.email),
+                    indexPessoa: index,
+                  ),
+                  Divider(
+                    color: Colors.black,
+                    height: 1,
+                  )
+                ],
               );
+              
             },
           );
         }
@@ -104,59 +113,68 @@ class PersonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final _pessoasCtrl = Get.find<PessoasControler>();
 
-    return Container(
-      padding: const EdgeInsets.all(8),
-      height: 100,
-      width: double.infinity,
-      decoration: const BoxDecoration(color: Colors.white),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const CircleAvatar(
-            radius: 32,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                pessoa.name,
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        height: 100,
+        width: double.infinity,
+        decoration: const BoxDecoration(color: Colors.white),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              child: Text(
+                '${pessoa.name[0].capitalize}',
+                style: TextStyle(fontSize: 32),
               ),
-              Text(
-                pessoa.email,
-                style: const TextStyle(fontSize: 16),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Get.toNamed('atualizarPessoa', arguments: [Pessoa(pessoa.name, pessoa.email), indexPessoa]);
-                },
-                icon: Icon(
-                  Icons.edit,
-                  color: Colors.blue,
-                  size: 24,
+              radius: 32,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  pessoa.name,
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
-              ),
-              IconButton(
+                Text(
+                  pessoa.email,
+                  style: const TextStyle(fontSize: 16),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                IconButton(
                   onPressed: () {
-                    print('teste ${_pessoasCtrl.pessoas}');
-                    _pessoasCtrl.removerPessoa(indexPessoa);
+                    Get.toNamed('atualizarPessoa', arguments: [
+                      Pessoa(pessoa.name, pessoa.email),
+                      indexPessoa
+                    ]);
                   },
                   icon: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
+                    Icons.edit,
+                    color: Colors.blue,
                     size: 24,
-                  )),
-            ],
-          )
-        ],
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      _pessoasCtrl.removerPessoa(indexPessoa);
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                      size: 24,
+                    )),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -13,8 +13,8 @@ class PessoasControler extends GetxController {
   }
 
   void atulizarPessoa(int index, Pessoa atualizarPessoa){
-      atualizarPessoa.name = pessoas[index].name;
-      atualizarPessoa.email = pessoas[index].email;
+      pessoas[index] = atualizarPessoa;
+      
 
 
   }
