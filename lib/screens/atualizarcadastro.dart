@@ -76,7 +76,7 @@ class AtualizarPessoa extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 )),
             ElevatedButton(
