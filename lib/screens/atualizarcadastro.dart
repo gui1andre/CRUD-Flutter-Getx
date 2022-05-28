@@ -2,13 +2,13 @@ import 'package:crud/models/pessoa.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../components/textformfields.dart';
 import '../controllers/pessoas_controller.dart';
 
 class AtualizarPessoa extends StatelessWidget {
   const AtualizarPessoa({
     Key? key,
   }) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
@@ -37,58 +37,33 @@ class AtualizarPessoa extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 56, 0, 32),
-                      child: SizedBox(
-                        width: 350,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Nome obrigatório.';
-                            } else {
-                              return null;
-                            }
-                          },
-                          keyboardType: TextInputType.name,
-                          controller: nome,
-                          decoration: const InputDecoration(
-                            hintText: 'Nome',
-                          ),
-                        ),
-                      ),
+                    TextFormFieldCadastro(
+                      controller: nome,
+                      menssagemErro: 'Nome obrigatório.',
+                      nomeCampo: 'Nome',
+                      textInputType: TextInputType.text,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 24),
-                      child: SizedBox(
-                        width: 350,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'E-mail obrigatório.';
-                            } else {
-                              return null;
-                            }
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          controller: email,
-                          decoration: const InputDecoration(
-                            hintText: 'E-mail',
-                          ),
-                        ),
-                      ),
+                    TextFormFieldCadastro(
+                      controller: email,
+                      menssagemErro: 'E-mail obrigatório.',
+                      nomeCampo: 'E-mail',
+                      textInputType: TextInputType.emailAddress,
                     ),
                   ],
                 )),
-            ElevatedButton(
-                onPressed: () {
-                  final isValidForm = formKey.currentState!.validate();
-                  if (isValidForm) {
-                    _pessoasCtrl.atulizarPessoa(
-                        indexPessoa, Pessoa(nome.text, email.text));
-                    Get.back();
-                  }
-                },
-                child: const Text('Atualizar'))
+            Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    final isValidForm = formKey.currentState!.validate();
+                    if (isValidForm) {
+                      _pessoasCtrl.atulizarPessoa(
+                          indexPessoa, Pessoa(nome.text, email.text));
+                      Get.back();
+                    }
+                  },
+                  child: const Text('Atualizar')),
+            )
           ],
         ),
       ),

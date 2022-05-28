@@ -2,7 +2,7 @@ import 'package:crud/screens/add_pessoa.dart';
 import 'package:crud/screens/atualizarcadastro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'components/textformfield.dart';
+import 'components/textformfields.dart';
 import 'screens/dashboard.dart';
 
 void main() {
@@ -54,7 +54,7 @@ class Login extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 150),
+                  padding: const EdgeInsets.only(top: 130),
                   child: Container(
                     width: 118,
                     height: 118,
@@ -72,14 +72,40 @@ class Login extends StatelessWidget {
                 Form(
                   child: Column(
                     children: [
-                      TextFieldForm(controler: loginController, textoCampo: 'Preencher o Login', nomeCampo: 'Login',),
-                      TextFieldForm(controler: senhaController, textoCampo: 'Preencher a Senha', nomeCampo: 'Senha',), 
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 48, 0, 16),
+                        child: TextFieldFormLogin(
+                          controler: loginController,
+                          textoCampo: 'Preencher o Login',
+                          nomeCampo: 'Login',
+                          textInputType: TextInputType.emailAddress,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: TextFieldFormLogin(
+                          controler: senhaController,
+                          textoCampo: 'Preencher a Senha',
+                          nomeCampo: 'Senha',
+                          textInputType: TextInputType.visiblePassword,
+                        ),
+                      ),
                       ElevatedButton(
                           onPressed: () {
-                            Get.offNamed('dashboard');
+                            if (_verificarLogin(
+                                loginController, senhaController)) {
+                              Get.offNamed('dashboard');
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Login ou Senha Invalidos!"),
+                              ),
+                            );
+                            }
+                            
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.blue.shade900),
+                              primary: Colors.blue.shade500),
                           child: const Text('Efetuar Login'))
                     ],
                   ),
@@ -90,5 +116,13 @@ class Login extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _verificarLogin(
+      TextEditingController usuario, TextEditingController senha) {
+    if (usuario.text == 'guilherme' && senha.text == '123') {
+      return true;
+    }
+    return false;
   }
 }

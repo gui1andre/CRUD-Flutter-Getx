@@ -2,12 +2,13 @@ import 'package:crud/models/pessoa.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../components/textformfields.dart';
 import '../controllers/pessoas_controller.dart';
 
 class CadastrarPessoa extends StatelessWidget {
-  const CadastrarPessoa({Key? key, }) : super(key: key);
-
-
+  const CadastrarPessoa({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class CadastrarPessoa extends StatelessWidget {
     TextEditingController nome = TextEditingController();
     TextEditingController email = TextEditingController();
     final formKey = GlobalKey<FormState>();
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -32,53 +33,29 @@ class CadastrarPessoa extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 56, 0, 32),
-                      child: SizedBox(
-                        width: 350,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Nome obrigatório.';
-                            } else {
-                              return null;
-                            }
-                          },
-                          keyboardType: TextInputType.name,
-                          controller: nome,
-                          decoration: const InputDecoration(
-                            hintText: 'Nome',
-                          ),
-                        ),
-                      ),
+                    TextFormFieldCadastro(
+                      controller: nome,
+                      menssagemErro: 'Nome obrigatório.',
+                      nomeCampo: 'Nome',
+                      textInputType: TextInputType.text,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 24),
-                      child: SizedBox(
-                        width: 350,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'E-mail obrigatório.';
-                            } else {
-                              return null;
-                            }
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          controller: email,
-                          decoration: const InputDecoration(
-                            hintText: 'E-mail',
-                          ),
-                        ),
-                      ),
-                    )
+                    TextFormFieldCadastro(
+                      controller: email,
+                      menssagemErro: 'E-mail obrigatório.',
+                      nomeCampo: 'E-mail',
+                      textInputType: TextInputType.emailAddress,
+                    ),
                   ],
                 )),
-            ElevatedButton(onPressed: () {
-              _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text));
-              Get.back();
-
-            }, child: const Text('Cadastrar'))
+            Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: ElevatedButton(
+                  onPressed: () {
+                    _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text));
+                    Get.back();
+                  },
+                  child: const Text('Cadastrar')),
+            )
           ],
         ),
       ),
