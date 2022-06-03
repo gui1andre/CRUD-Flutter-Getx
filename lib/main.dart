@@ -92,16 +92,17 @@ class Login extends StatelessWidget {
                       ),
                       ElevatedButton(
                           onPressed: () {
-                            if (_verificarLogin(
-                                loginController, senhaController)) {
-                              Get.offNamed('dashboard');
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Login ou Senha Invalidos!"),
-                              ),
-                            );
-                            }
+                            Get.offNamed('dashboard');
+                            // if (_verificarLogin(
+                            //     loginController, senhaController)) {
+                            //   Get.offNamed('dashboard');
+                            // } else {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(
+                            //     content: Text("Login ou Senha Invalidos!"),
+                            //   ),
+                            // );
+                            // }
                             
                           },
                           style: ElevatedButton.styleFrom(

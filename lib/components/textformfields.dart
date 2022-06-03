@@ -5,7 +5,8 @@ class TextFieldFormLogin extends StatelessWidget {
       {Key? key,
       required this.textoCampo,
       required this.controler,
-      required this.nomeCampo, required this.textInputType})
+      required this.nomeCampo,
+      required this.textInputType})
       : super(key: key);
   final String textoCampo;
   final TextEditingController controler;
@@ -14,36 +15,27 @@ class TextFieldFormLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: SizedBox(
-        width: 350,
-        child: TextFormField(
-          style: const TextStyle(
-            color: Colors.white
+    return SizedBox(
+      width: 350,
+      child: TextFormField(
+        style: const TextStyle(color: Colors.white),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return '$textoCampo.';
+          } else {
+            return null;
+          }
+        },
+        keyboardType: textInputType,
+        controller: controler,
+        decoration: InputDecoration(
+          hintStyle: const TextStyle(color: Colors.white),
+          hintText: nomeCampo,
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return '$textoCampo.';
-            } else {
-              return null;
-            }
-          },
-          keyboardType: textInputType,
-          controller: controler,
-      
-          decoration: InputDecoration(
-            hintStyle: const TextStyle(
-              color: Colors.white
-            ),
-            hintText: nomeCampo,
-            enabledBorder: const UnderlineInputBorder(      
-                      borderSide:  BorderSide(color: Colors.white),   
-                      ),  
-              focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                   ),  
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
         ),
       ),
@@ -51,9 +43,14 @@ class TextFieldFormLogin extends StatelessWidget {
   }
 }
 
-
 class TextFormFieldCadastro extends StatelessWidget {
-  const TextFormFieldCadastro({Key? key, required this.menssagemErro, required this.textInputType, required this.controller, required this.nomeCampo}) : super(key: key);
+  const TextFormFieldCadastro(
+      {Key? key,
+      required this.menssagemErro,
+      required this.textInputType,
+      required this.controller,
+      required this.nomeCampo})
+      : super(key: key);
   final String menssagemErro;
   final TextInputType textInputType;
   final TextEditingController controller;
@@ -61,26 +58,22 @@ class TextFormFieldCadastro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-                    Padding(
-                      padding: const EdgeInsets.only(top: 64),
-                      child: SizedBox(
-                        width: 350,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return menssagemErro;
-                            } else {
-                              return null;
-                            }
-                          },
-                          keyboardType: textInputType,
-                          controller: controller,
-                          decoration: InputDecoration(
-                            hintText: nomeCampo,
-                          ),
-                        ),
-                      ),
-                    );
+    return SizedBox(
+      width: 350,
+      child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return menssagemErro;
+          } else {
+            return null;
+          }
+        },
+        keyboardType: textInputType,
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: nomeCampo,
+        ),
+      ),
+    );
   }
 }

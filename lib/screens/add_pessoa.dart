@@ -51,7 +51,7 @@ class CadastrarPessoa extends StatelessWidget {
               padding: const EdgeInsets.only(top: 32.0),
               child: ElevatedButton(
                   onPressed: () {
-                    _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text));
+                    _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text, null));
                     Get.back();
                   },
                   child: const Text('Cadastrar')),

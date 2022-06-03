@@ -1,5 +1,5 @@
-
 import 'package:get/get.dart';
+
 import '../models/pessoa.dart';
 
 class PessoasControler extends GetxController {
@@ -13,9 +13,7 @@ class PessoasControler extends GetxController {
     pessoas.removeAt(index);
   }
 
-  void atulizarPessoa(int index, Pessoa atualizarPessoa){
-      pessoas[index] = atualizarPessoa;
-    
-
+  void atulizarPessoa(int index, Pessoa atualizarPessoa) {
+    pessoas[index] = atualizarPessoa;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '/controllers/pessoas_controller.dart';
@@ -8,9 +10,11 @@ class PersonCard extends StatelessWidget {
     Key? key,
     required this.pessoa,
     required this.indexPessoa,
+    this.foto,
   }) : super(key: key);
   final Pessoa pessoa;
   final int indexPessoa;
+  final File? foto;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +31,8 @@ class PersonCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              child: Text(
-                '${pessoa.name[0].capitalize}',
-                style: const TextStyle(fontSize: 32),
-              ),
-              radius: 32,
+            FotoPerfil(
+              nomePessoa: pessoa.name,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +55,7 @@ class PersonCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     Get.toNamed('atualizarPessoa', arguments: [
-                      Pessoa(pessoa.name, pessoa.email),
+                      Pessoa(pessoa.name, pessoa.email, null),
                       indexPessoa
                     ]);
                   },
@@ -80,5 +80,32 @@ class PersonCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class FotoPerfil extends StatelessWidget {
+  const FotoPerfil({Key? key, required this.nomePessoa, this.foto})
+      : super(key: key);
+  final String nomePessoa;
+  final File? foto;
+
+  @override
+  Widget build(BuildContext context) {
+    if (foto == null) {
+      return CircleAvatar(
+        child: Text(
+          '${nomePessoa[0].capitalize}',
+          style: const TextStyle(fontSize: 32),
+        ),
+        radius: 32,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle
+        ),
+        child: Image.file(foto!)
+      );
+    }
   }
 }

@@ -51,7 +51,7 @@ class DashBody extends StatelessWidget {
               return Column(
                 children: [
                   PersonCard(
-                    pessoa: Pessoa(_porPessoa.name, _porPessoa.email),
+                    pessoa: Pessoa(_porPessoa.name, _porPessoa.email, _porPessoa.foto),
                     indexPessoa: index,
                   ),
                   const Divider(
