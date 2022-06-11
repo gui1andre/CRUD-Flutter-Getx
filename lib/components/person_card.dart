@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '/controllers/pessoas_controller.dart';
@@ -10,11 +8,9 @@ class PersonCard extends StatelessWidget {
     Key? key,
     required this.pessoa,
     required this.indexPessoa,
-    this.foto,
   }) : super(key: key);
   final Pessoa pessoa;
   final int indexPessoa;
-  final File? foto;
 
   @override
   Widget build(BuildContext context) {
@@ -32,30 +28,42 @@ class PersonCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             FotoPerfil(
-              nomePessoa: pessoa.name,
+              pessoa: pessoa,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  pessoa.name,
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: SizedBox(
+                width: 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      pessoa.name.capitalize!,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      pessoa.email,
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
-                Text(
-                  pessoa.email,
-                  style: const TextStyle(fontSize: 16),
-                )
-              ],
+              ),
             ),
             Row(
               children: [
                 IconButton(
                   onPressed: () {
                     Get.toNamed('atualizarPessoa', arguments: [
-                      Pessoa(pessoa.name, pessoa.email, null),
+                      Pessoa(pessoa.name, pessoa.email, pessoa.foto),
                       indexPessoa
                     ]);
                   },
@@ -84,27 +92,28 @@ class PersonCard extends StatelessWidget {
 }
 
 class FotoPerfil extends StatelessWidget {
-  const FotoPerfil({Key? key, required this.nomePessoa, this.foto})
-      : super(key: key);
-  final String nomePessoa;
-  final File? foto;
+  const FotoPerfil({
+    Key? key,
+    required this.pessoa,
+  }) : super(key: key);
+  final Pessoa pessoa;
 
   @override
   Widget build(BuildContext context) {
-    if (foto == null) {
+    if (pessoa.foto == null) {
       return CircleAvatar(
         child: Text(
-          '${nomePessoa[0].capitalize}',
+          '${pessoa.name[0].capitalize}',
           style: const TextStyle(fontSize: 32),
         ),
         radius: 32,
       );
     } else {
-      return Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle
+      return CircleAvatar(
+        radius: 32,
+        backgroundImage: FileImage(
+          pessoa.foto!,
         ),
-        child: Image.file(foto!)
       );
     }
   }

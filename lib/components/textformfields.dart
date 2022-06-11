@@ -6,12 +6,15 @@ class TextFieldFormLogin extends StatelessWidget {
       required this.textoCampo,
       required this.controler,
       required this.nomeCampo,
-      required this.textInputType})
+      required this.textInputType, required this.textoOculto, required this.mostrarSugestao, required this.autoCorrecao})
       : super(key: key);
   final String textoCampo;
   final TextEditingController controler;
   final String nomeCampo;
   final TextInputType textInputType;
+  final bool textoOculto;
+  final bool mostrarSugestao;
+  final bool autoCorrecao;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,9 @@ class TextFieldFormLogin extends StatelessWidget {
             return null;
           }
         },
+        obscureText: textoOculto,
+        enableSuggestions: mostrarSugestao,
+        autocorrect: autoCorrecao,
         keyboardType: textInputType,
         controller: controler,
         decoration: InputDecoration(

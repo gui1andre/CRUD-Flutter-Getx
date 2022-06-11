@@ -27,36 +27,45 @@ class CadastrarPessoa extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(color: Colors.white),
-        child: Column(
-          children: [
-            Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    TextFormFieldCadastro(
-                      controller: nome,
-                      menssagemErro: 'Nome obrigatório.',
-                      nomeCampo: 'Nome',
-                      textInputType: TextInputType.text,
-                    ),
-                    TextFormFieldCadastro(
-                      controller: email,
-                      menssagemErro: 'E-mail obrigatório.',
-                      nomeCampo: 'E-mail',
-                      textInputType: TextInputType.emailAddress,
-                    ),
-                  ],
-                )),
-            Padding(
-              padding: const EdgeInsets.only(top: 32.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    _pessoasCtrl.adicionarPessoa(Pessoa(nome.text, email.text, null));
-                    Get.back();
-                  },
-                  child: const Text('Cadastrar')),
-            )
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 56, 0, 48),
+                        child: TextFormFieldCadastro(
+                          controller: nome,
+                          menssagemErro: 'Nome obrigatório.',
+                          nomeCampo: 'Nome',
+                          textInputType: TextInputType.text,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 32),
+                        child: TextFormFieldCadastro(
+                          controller: email,
+                          menssagemErro: 'E-mail obrigatório.',
+                          nomeCampo: 'E-mail',
+                          textInputType: TextInputType.emailAddress,
+                        ),
+                      ),
+                    ],
+                  )),
+              Padding(
+                padding: const EdgeInsets.only(top: 32.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      _pessoasCtrl
+                          .adicionarPessoa(Pessoa(nome.text, email.text, null));
+                      Get.back();
+                    },
+                    child: const Text('Cadastrar')),
+              )
+            ],
+          ),
         ),
       ),
     );
