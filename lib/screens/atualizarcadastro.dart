@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:crud/controllers/estados_controller.dart';
 import 'package:crud/models/pessoa.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../components/textformfields.dart';
 import '../controllers/pessoas_controller.dart';
+import '../models/estados.dart';
 
 class AtualizarPessoa extends StatefulWidget {
   const AtualizarPessoa({
@@ -29,7 +32,18 @@ class _AtualizarPessoaState extends State<AtualizarPessoa> {
         TextEditingController(text: pessoaAtualizar.name);
     TextEditingController email =
         TextEditingController(text: pessoaAtualizar.email);
+    TextEditingController dataNascimento =
+        TextEditingController(text: pessoaAtualizar.datanascimento);
+    TextEditingController cep =
+        TextEditingController(text: pessoaAtualizar.cep);
+    TextEditingController cidade =
+        TextEditingController(text: pessoaAtualizar.cidade);
     XFile? imagemTemporaria;
+    DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+    EstadosController estadosController = EstadosController();
+    estadosController.selected.value = pessoaAtualizar.estado;
+
+    print(pessoaAtualizar.toString());
 
     final ImagePicker imagePicker = ImagePicker();
 
@@ -111,7 +125,7 @@ class _AtualizarPessoaState extends State<AtualizarPessoa> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 16, 0, 56),
+                        padding: const EdgeInsets.fromLTRB(0, 56, 0, 48),
                         child: TextFormFieldCadastro(
                           controller: nome,
                           menssagemErro: 'Nome obrigatório.',
@@ -119,11 +133,121 @@ class _AtualizarPessoaState extends State<AtualizarPessoa> {
                           textInputType: TextInputType.text,
                         ),
                       ),
-                      TextFormFieldCadastro(
-                        controller: email,
-                        menssagemErro: 'E-mail obrigatório.',
-                        nomeCampo: 'E-mail',
-                        textInputType: TextInputType.emailAddress,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 48),
+                        child: TextFormFieldCadastro(
+                          controller: email,
+                          menssagemErro: 'E-mail obrigatório.',
+                          nomeCampo: 'E-mail',
+                          textInputType: TextInputType.emailAddress,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 32),
+                        child: SizedBox(
+                          width: 350,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 180,
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Data de nascimento obrigatoria';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  readOnly: true,
+                                  onTap: () async {
+                                    DateTime? date = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1960),
+                                        lastDate: DateTime.now());
+                                    if (date != null) {
+                                      dataNascimento.text =
+                                          dateFormat.format(date);
+                                    }
+                                  },
+                                  keyboardType: TextInputType.datetime,
+                                  controller: dataNascimento,
+                                  decoration: const InputDecoration(
+                                    suffixIcon: Icon(Icons.date_range),
+                                    hintText: 'Data Nascimento',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 120,
+                                child: TextFormField(
+                                  maxLength: 8,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'CEP Obrigatorio';
+                                    } else if (value.length < 8) {
+                                      return 'Preencher os 8 digitos';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  controller: cep,
+                                  decoration: const InputDecoration(
+                                    hintText: 'CEP',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 350,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 180,
+                              child: Obx(() => DropdownButton(
+                                    onChanged: (newValue) {
+                                      estadosController
+                                          .setSelected(newValue.toString());
+                                    },
+                                    value: estadosController.selected.value,
+                                    items: estadosFormatado.map((selectedType) {
+                                      return DropdownMenuItem(
+                                        child: Text(
+                                          selectedType,
+                                        ),
+                                        value: selectedType,
+                                      );
+                                    }).toList(),
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 160,
+                              child: TextFormField(
+                                maxLength: null,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Cidade obrigatoria';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                keyboardType: TextInputType.name,
+                                controller: cidade,
+                                decoration: const InputDecoration(
+                                  hintText: 'Cidade',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   )),
@@ -136,7 +260,13 @@ class _AtualizarPessoaState extends State<AtualizarPessoa> {
                         _pessoasCtrl.atulizarPessoa(
                             indexPessoa,
                             Pessoa(
-                                nome.text, email.text, pessoaAtualizar.foto));
+                                name: nome.text,
+                                email: email.text,
+                                foto: pessoaAtualizar.foto,
+                                datanascimento: dataNascimento.text,
+                                cep: cep.text,
+                                estado: estadosController.selected.string,
+                                cidade: cidade.text));
                         Get.back();
                       }
                     },
@@ -171,7 +301,6 @@ class PerfilImage extends StatelessWidget {
         ),
         radius: 50,
       );
-      
     }
   }
 }

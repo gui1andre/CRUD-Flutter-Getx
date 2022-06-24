@@ -63,7 +63,7 @@ class PersonCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     Get.toNamed('atualizarPessoa', arguments: [
-                      Pessoa(pessoa.name, pessoa.email, pessoa.foto),
+                      pessoa,
                       indexPessoa
                     ]);
                   },

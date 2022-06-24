@@ -55,12 +55,14 @@ class TextFormFieldCadastro extends StatelessWidget {
       required this.menssagemErro,
       required this.textInputType,
       required this.controller,
-      required this.nomeCampo})
+      required this.nomeCampo, this.funcao, this.icone})
       : super(key: key);
   final String menssagemErro;
-  final TextInputType textInputType;
+  final TextInputType? textInputType;
   final TextEditingController controller;
   final String nomeCampo;
+  final Function? funcao;
+  final IconData? icone;
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +79,10 @@ class TextFormFieldCadastro extends StatelessWidget {
         keyboardType: textInputType,
         controller: controller,
         decoration: InputDecoration(
+          suffixIcon: IconButton(icon: Icon(icone), onPressed: () => funcao,),
           hintText: nomeCampo,
         ),
+        
       ),
     );
   }
